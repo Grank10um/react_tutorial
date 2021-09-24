@@ -12,6 +12,8 @@ function App() {
   return (
     <div className="App">
       <Counter/>
+       <ClassCounter/>      
+       <Counter/>
        <ClassCounter/>
 
     </div>
