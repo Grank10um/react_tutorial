@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import ClassCounter from './components/ClassCounter';
 import Counter from './components/counter';
+import PostForm from './components/PostForm';
 import PostItem from './components/PostItem';
 import PostList from './components/PostList';
 import MyInput from './components/UI/button/input/MyInput';
@@ -27,21 +28,7 @@ const addNewPost = (e) => {
 
   return (
     <div className="App">
-      <form>
-        <MyInput 
-          value={post.title}
-          onChange={e => setPost({...post, title: e.target.value})}
-          type="text"
-          placeholder="post Name"
-        />
-
-        <MyInput 
-          value={post.body}
-          onChange={e => setPost({...post, body: e.target.value})}
-          type="text" 
-          placeholder="Post description"/>
-        <MyButton onClick={addNewPost} >Create Post</MyButton>
-      </form>
+      <PostForm/>
       <PostList posts={posts} title="Postlist1"/>  
     </div>
   );
