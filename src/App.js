@@ -17,29 +17,29 @@ function App() {
 
   ]);
 
-  const [title, setTitle] =useState('')
-  const bodyInputRef = useRef(); 
+const [post, setPost]=useState({title:'', body:''})
 
 const addNewPost = (e) => {
-  e.preventDefault()
-  console.log(title)
-  {/*console.log(bodyInputRef.current.value)  метод с хуком юзреф*/} 
-  console.log(bodyInputRef.current.value)
+  e.preventDefault() /* прерывание обновления странички */
+  setPosts([...posts, {...post, id: Date.now()}])
+  setPost({title:'', body:''})
 }
 
   return (
     <div className="App">
       <form>
         <MyInput 
-          value={title}
-          onChange={e => setTitle(e.target.value)}
+          value={post.title}
+          onChange={e => setPost({...post, title: e.target.value})}
           type="text"
           placeholder="post Name"
         />
-       {/*} <input ref={bodyInputRef} type="text" /> обращение к любому дом елементу*/}
 
-{/*неконтролируемый элемент/*}
-        <MyInput ref={bodyInputRef} type="text" placeholder="Post description"/>
+        <MyInput 
+          value={post.body}
+          onChange={e => setPost({...post, body: e.target.value})}
+          type="text" 
+          placeholder="Post description"/>
         <MyButton onClick={addNewPost} >Create Post</MyButton>
       </form>
       <PostList posts={posts} title="Postlist1"/>  
