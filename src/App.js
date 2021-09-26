@@ -11,25 +11,29 @@ import "./styles/App.css"
 
 function App() {
   const [posts, setPosts] = useState([
-    {id: 1, title: 'JavaSc', body: 'description'},
-    {id: 2, title: 'Java2Sc', body: 'desc543ription'},
-    {id: 3, title: 'Jav4aSc', body: 'descr534iption'},
-    {id: 4, title: 'Jav3aSc', body: 'descrertgiption'},
-
+    { id: 1, title: 'JavaSc', body: 'description' },
+    { id: 2, title: 'Java2Sc', body: 'desc543ription' },
   ]);
 
-const [post, setPost]=useState({title:'', body:''})
+const createPost = (newPost) => {
+  setPosts([...posts, newPost])
+}
 
-const addNewPost = (e) => {
-  e.preventDefault() /* прерывание обновления странички */
-  setPosts([...posts, {...post, id: Date.now()}])
-  setPost({title:'', body:''})
+const removePost = (post) => {
+  setPosts(posts.filter(p => p.id !==post.id))
 }
 
   return (
     <div className="App">
-      <PostForm/>
-      <PostList posts={posts} title="Postlist1"/>  
+      <PostForm create={createPost} />
+      {
+        posts.length !==0
+        ? <PostList remove={removePost} posts={posts} title="Postlist1" />
+        : <h1 style={{textAlign: 'center'}}>
+          Pusto!
+          </h1>
+      }
+      
     </div>
   );
 };
