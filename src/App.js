@@ -24,7 +24,7 @@ const addNewPost = (e) => {
   e.preventDefault()
   console.log(title)
   {/*console.log(bodyInputRef.current.value)  метод с хуком юзреф*/} 
-
+  console.log(bodyInputRef.current.value)
 }
 
   return (
@@ -38,8 +38,8 @@ const addNewPost = (e) => {
         />
        {/*} <input ref={bodyInputRef} type="text" /> обращение к любому дом елементу*/}
 
-
-        <MyInput type="text" placeholder="Post description"/>
+{/*неконтролируемый элемент/*}
+        <MyInput ref={bodyInputRef} type="text" placeholder="Post description"/>
         <MyButton onClick={addNewPost} >Create Post</MyButton>
       </form>
       <PostList posts={posts} title="Postlist1"/>  
