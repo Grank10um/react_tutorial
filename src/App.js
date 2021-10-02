@@ -9,6 +9,7 @@ import MyButton from './components/UI/button/MyButton';
 import MySelect from './components/UI/select/MySelect';
 import "./styles/App.css"
 import PostFilter from './components/PostFilter';
+import MyModal from './components/UI/modal/MyModal';
 
 
 function App() {
@@ -45,24 +46,18 @@ const sortedAndSearchedPosts = useMemo(()=>{
 
   return (
     <div className="App">
+      <MyModal>      
+       asdswdedfcwD
+      </MyModal>
       <PostForm create={createPost}/>
       <hr style={{margin: '15px 0'}}/>
       <PostFilter 
         filter={filter} 
         setFilter={setFilter}
-      />
-
-
-      {
-        sortedAndSearchedPosts.length !== 0
-          ? <PostList remove={removePost} posts={sortedAndSearchedPosts} title="Postlist1" />
-          : <h1 style={{ textAlign: 'center' }}>
-            Pusto!
-          </h1>
-      }
-
+        />
+        <PostList remove={removePost} posts={sortedAndSearchedPosts} title="Postlist1" />
     </div>
   );
-};
+}
 
 export default App;
