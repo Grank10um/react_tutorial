@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, {useMemo, useRef, useState } from 'react';
 import ClassCounter from './components/ClassCounter';
 import Counter from './components/counter';
 import PostForm from './components/PostForm';
@@ -8,6 +8,7 @@ import MyInput from './components/UI/input/MyInput';
 import MyButton from './components/UI/button/MyButton';
 import MySelect from './components/UI/select/MySelect';
 import "./styles/App.css"
+import PostFilter from './components/PostFilter';
 
 
 function App() {
@@ -18,7 +19,21 @@ function App() {
     { id: 4, title: 'q2Sc', body: '43' },
   ])
 
-const [selectedSort, setSelectedSort] = useState('')
+const [filter, setFilter] = useState({sort:'', query:''})
+
+const sortedPosts = useMemo(()=>{
+  console.log("usememi works!")
+  if (filter.sort) {
+    return [...posts].sort((a,b) => a[filter.sort].localeCompare(b[filter.sort]))
+  } 
+    return posts;
+}, [filter.sort, posts])
+
+const sortedAndSearchedPosts = useMemo(()=>{
+  return sortedPosts.filter(post=>post.title.toLowerCase().includes(filter.query))
+}, [filter.query, sortedPosts])
+
+
 
   const createPost = (newPost) => {
     setPosts([...posts, newPost])
@@ -28,31 +43,19 @@ const [selectedSort, setSelectedSort] = useState('')
     setPosts(posts.filter(p => p.id !== post.id))
   }
 
-const sortPosts = (sort) => {
-  setSelectedSort(sort);
-  setPosts([...posts].sort((a,b) => a[sort].localeCompare(b[sort])))
-}
-
   return (
     <div className="App">
       <PostForm create={createPost}/>
       <hr style={{margin: '15px 0'}}/>
-      <div>
-        <MySelect
-          value={selectedSort}
-          onChange={sortPosts}
-          defaultValue="sortirovka"
-          options={[
-            {value: 'title', name: 'Po nazvanijy' },
-            {value: 'body', name: 'Po opisanijy' },
-          ]}
-        />
-      </div>
+      <PostFilter 
+        filter={filter} 
+        setFilter={setFilter}
+      />
 
 
       {
-        posts.length !== 0
-          ? <PostList remove={removePost} posts={posts} title="Postlist1" />
+        sortedAndSearchedPosts.length !== 0
+          ? <PostList remove={removePost} posts={sortedAndSearchedPosts} title="Postlist1" />
           : <h1 style={{ textAlign: 'center' }}>
             Pusto!
           </h1>
