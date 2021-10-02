@@ -9,7 +9,7 @@ import MyButton from './components/UI/button/MyButton';
 import MySelect from './components/UI/select/MySelect';
 import "./styles/App.css"
 import PostFilter from './components/PostFilter';
-import MyModal from './components/UI/modal/MyModal';
+import MyModal from './components/UI/modalwin/MyModal';
 
 
 function App() {
@@ -21,6 +21,7 @@ function App() {
   ])
 
 const [filter, setFilter] = useState({sort:'', query:''})
+const [modal, setModal] = useState(false)
 
 const sortedPosts = useMemo(()=>{
   console.log("usememi works!")
@@ -38,6 +39,7 @@ const sortedAndSearchedPosts = useMemo(()=>{
 
   const createPost = (newPost) => {
     setPosts([...posts, newPost])
+    setModal(false)
   }
 
   const removePost = (post) => {
@@ -46,10 +48,14 @@ const sortedAndSearchedPosts = useMemo(()=>{
 
   return (
     <div className="App">
-      <MyModal>      
-       asdswdedfcwD
+      <MyButton onClick={()=>setModal(true)} style={{marginTop: 30}}>
+        create post?
+      </MyButton>
+      <MyModal visible={modal} setVisible={setModal}>
+        <PostForm create={createPost}/>
       </MyModal>
-      <PostForm create={createPost}/>
+       
+      
       <hr style={{margin: '15px 0'}}/>
       <PostFilter 
         filter={filter} 
