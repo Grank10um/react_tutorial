@@ -10,30 +10,16 @@ import MySelect from './components/UI/select/MySelect';
 import "./styles/App.css"
 import PostFilter from './components/PostFilter';
 import MyModal from './components/UI/modalwin/MyModal';
+import { usePosts } from './hooks/usePost';
 
 
 function App() {
-  const [posts, setPosts] = useState([
-    { id: 1, title: 'd', body: 'n' },    
-    { id: 2, title: 'a', body: 'd' },    
-    { id: 3, title: 'b', body: 'p' },
-    { id: 4, title: 'q2Sc', body: '43' },
-  ])
-
+  const [posts, setPosts] = useState([])
 const [filter, setFilter] = useState({sort:'', query:''})
 const [modal, setModal] = useState(false)
+const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
 
-const sortedPosts = useMemo(()=>{
-  console.log("usememi works!")
-  if (filter.sort) {
-    return [...posts].sort((a,b) => a[filter.sort].localeCompare(b[filter.sort]))
-  } 
-    return posts;
-}, [filter.sort, posts])
 
-const sortedAndSearchedPosts = useMemo(()=>{
-  return sortedPosts.filter(post=>post.title.toLowerCase().includes(filter.query))
-}, [filter.query, sortedPosts])
 
 
 
