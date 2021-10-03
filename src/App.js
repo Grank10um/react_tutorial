@@ -1,4 +1,4 @@
-import React, {useMemo, useRef, useState } from 'react';
+import React, {useMemo, useRef, useState, useEffect } from 'react';
 import ClassCounter from './components/ClassCounter';
 import Counter from './components/counter';
 import PostForm from './components/PostForm';
@@ -11,6 +11,10 @@ import "./styles/App.css"
 import PostFilter from './components/PostFilter';
 import MyModal from './components/UI/modalwin/MyModal';
 import { usePosts } from './hooks/usePost';
+import axios from 'axios';
+import PostService from './API/Post service';
+import Loader from './components/UI/loader/Loader';
+import { useFetching } from './hooks/useFetching';
 
 
 function App() {
@@ -18,10 +22,14 @@ function App() {
 const [filter, setFilter] = useState({sort:'', query:''})
 const [modal, setModal] = useState(false)
 const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
+const [fetchPosts, isPostLoading, postError] =useFetching(async()=> {
+  const posts = await PostService.getAll();
+  setPosts(posts)
+})
 
-
-
-
+useEffect(  ()=> {
+  fetchPosts()
+},[])
 
   const createPost = (newPost) => {
     setPosts([...posts, newPost])
@@ -47,7 +55,14 @@ const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
         filter={filter} 
         setFilter={setFilter}
         />
-        <PostList remove={removePost} posts={sortedAndSearchedPosts} title="Postlist1" />
+        {postError &&
+          <h1>Something was wrong! {postError}</h1> }
+        {isPostLoading
+        
+          ?<div style={{display: 'flex', justifyContent: 'center', marginTop:50}}><Loader/></div>
+          : <PostList remove={removePost} posts={sortedAndSearchedPosts} title="Postlist1" />
+        }
+
     </div>
   );
 }
